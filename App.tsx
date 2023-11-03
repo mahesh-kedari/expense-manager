@@ -8,6 +8,7 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet } from "react-native";
 import ManageExpenses from "./screens/ManageExpenses";
 import ExpensesOverview from "./screens/ExpensesOverview";
+import { GlobalStyles } from "./constants/styles";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -16,13 +17,25 @@ export default function App() {
     <>
       <StatusBar style="light" />
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator
+          initialRouteName="ExpensesOverview"
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: GlobalStyles.colors.primary500,
+            },
+            headerTintColor: "white",
+          }}
+        >
           <Stack.Screen
             name="ExpensesOverview"
             component={ExpensesOverview}
             options={{ headerShown: false }}
           />
-          <Stack.Screen name="ManageExpenses" component={ManageExpenses} />
+          <Stack.Screen
+            name="ManageExpenses"
+            component={ManageExpenses}
+            options={{ presentation: "modal" }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </>

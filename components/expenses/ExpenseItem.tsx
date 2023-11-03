@@ -5,16 +5,24 @@ import { getFormattedDate } from "../../utils/date";
 import { useNavigation } from "@react-navigation/native";
 
 type Props = {
+  id: string;
   description: string;
   amount: number;
   date: Date;
 };
 
-const ExpenseItem = ({ description, amount, date }: Props) => {
+const ExpenseItem = ({ id, description, amount, date }: Props) => {
   const navigation = useNavigation<any>();
 
   const expensePressHandler = () => {
-    navigation.navigate("ManageExpenses");
+    navigation.navigate("ManageExpenses", {
+      expense: {
+        id: id,
+        description: description,
+        amount: amount,
+        date: date,
+      },
+    });
   };
   return (
     <Pressable

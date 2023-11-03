@@ -1,9 +1,18 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useLayoutEffect } from "react";
+import {
+  NavigationContainerProps,
+  StackNavigationState,
+} from "@react-navigation/native";
 
-type Props = {};
+const ManageExpenses = ({ route, navigation }: any) => {
+  const expense = route.params.expense;
 
-const ManageExpenses = (props: Props) => {
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: expense.description,
+    });
+  }, [navigation]);
   return (
     <View>
       <Text>ManageExpenses</Text>

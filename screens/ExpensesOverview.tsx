@@ -11,10 +11,9 @@ type Props = {};
 
 const BottomTabs = createBottomTabNavigator();
 const ExpensesOverview = (props: Props) => {
-  const navigation = useNavigation<any>();
   return (
     <BottomTabs.Navigator
-      screenOptions={{
+      screenOptions={({ navigation }) => ({
         headerStyle: {
           backgroundColor: GlobalStyles.colors.primary500,
         },
@@ -30,12 +29,19 @@ const ExpensesOverview = (props: Props) => {
               size={24}
               color={tintColor}
               onPress={() => {
-                navigation.navigate("ManageExpenses");
+                navigation.navigate("ManageExpenses", {
+                  expense: {
+                    id: Math.random().toString(),
+                    description: "New Expense",
+                    amount: 0,
+                    date: new Date(),
+                  },
+                });
               }}
             />
           );
         },
-      }}
+      })}
     >
       <BottomTabs.Screen
         name="RecentExpenses"

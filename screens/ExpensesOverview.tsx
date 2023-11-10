@@ -5,7 +5,7 @@ import AllExpenses from "./AllExpenses";
 import { GlobalStyles } from "../constants/styles";
 import { Ionicons } from "@expo/vector-icons";
 import IconButton from "../components/UI/IconButton";
-import { useNavigation } from "@react-navigation/native";
+// import { useNavigation } from "@react-navigation/native";
 
 type Props = {};
 
@@ -31,7 +31,6 @@ const ExpensesOverview = (props: Props) => {
               onPress={() => {
                 navigation.navigate("ManageExpenses", {
                   expense: {
-                    id: Math.random().toString(),
                     description: "New Expense",
                     amount: 0,
                     date: new Date(),

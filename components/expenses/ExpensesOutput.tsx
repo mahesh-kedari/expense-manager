@@ -8,15 +8,21 @@ import { DUMMY_EXPENSES } from "../../store/dummy-expenses";
 type Props = {
   expenses?: Array<Expense>;
   expensePeriod: any;
+  fallbackText?: string;
 };
 const ExpensesOutput = ({
-  expenses = DUMMY_EXPENSES,
+  expenses = [],
   expensePeriod,
+  fallbackText = "No expenses found",
 }: Props) => {
   return (
     <View style={styles.container}>
       <ExpensesSummary expenses={expenses} periodName={expensePeriod} />
-      <ExpensesList expenses={expenses} />
+      {expenses.length === 0 ? (
+        <Text style={styles.infoText}>{fallbackText}</Text>
+      ) : (
+        <ExpensesList expenses={expenses} />
+      )}
     </View>
   );
 };
@@ -30,5 +36,11 @@ const styles = StyleSheet.create({
     paddingTop: 24,
     paddingBottom: 0,
     backgroundColor: GlobalStyles.colors.primary800,
+  },
+  infoText: {
+    color: "white",
+    fontSize: 16,
+    textAlign: "center",
+    marginTop: 32,
   },
 });

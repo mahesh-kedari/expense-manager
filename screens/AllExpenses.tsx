@@ -8,7 +8,11 @@ type Props = {};
 const AllExpenses = (props: Props) => {
   const expenseCtx = useContext(ExpenseContext);
   return (
-    <ExpensesOutput expenses={expenseCtx.expenses} expensePeriod={"Total"} />
+    <ExpensesOutput
+      expenses={expenseCtx.expenses}
+      expensePeriod={"Total"}
+      fallbackText="No expenses recorded so far"
+    />
   );
 };
 

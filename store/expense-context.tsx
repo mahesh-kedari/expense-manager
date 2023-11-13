@@ -1,29 +1,33 @@
 import { createContext, useReducer, PropsWithChildren } from "react";
-import { DUMMY_EXPENSES } from "./dummy-expenses";
 
 interface ExpenseContextType {
   expenses: Expense[];
-  addExpense: (expense: Omit<Expense, "id">) => void;
+  addExpense: (expense: Expense) => void;
+  setExpenses: (expenses: Array<Expense>) => void;
   deleteExpense: (id: string) => void;
   updateExpense: (expense: Expense) => void;
 }
 
 export const ExpenseContext = createContext<ExpenseContextType>({
   expenses: [],
-  addExpense: ({ description, amount, date }) => {},
+  addExpense: (expense) => {},
+  setExpenses: (expenses) => {},
   deleteExpense: (id) => {},
   updateExpense: ({ id, description, amount, date }) => {},
 });
 
 type ActionType =
-  | { type: "ADD"; payload: Omit<Expense, "id"> }
+  | { type: "ADD"; payload: Expense }
+  | { type: "SET"; payload: Array<Expense> }
   | { type: "UPDATE"; payload: { id: string; data: Partial<Expense> } }
   | { type: "DELETE"; payload: string };
 
 const expensesReducer = (state: Expense[], action: ActionType): Expense[] => {
   switch (action.type) {
     case "ADD":
-      return [{ id: Math.random().toString(), ...action.payload }, ...state];
+      return [action.payload, ...state];
+    case "SET":
+      return action.payload;
     case "UPDATE":
       const updatableExpenseIndex = state.findIndex(
         (expense: Expense) => expense.id === action.payload.id
@@ -43,14 +47,14 @@ const expensesReducer = (state: Expense[], action: ActionType): Expense[] => {
 export function ExpenseContextProvider({
   children,
 }: PropsWithChildren<any>): JSX.Element {
-  const [expenseState, dispatch] = useReducer(expensesReducer, DUMMY_EXPENSES);
+  const [expenseState, dispatch] = useReducer(expensesReducer, []);
   //   const [expenseState, dispatch] = useReducer<any>(expensesReducer, []);
-  const addExpense: ExpenseContextType["addExpense"] = ({
-    description,
-    amount,
-    date,
-  }) => {
-    dispatch({ type: "ADD", payload: { description, amount, date } });
+  const addExpense: ExpenseContextType["addExpense"] = (expense) => {
+    dispatch({ type: "ADD", payload: expense });
+  };
+
+  const setExpenses: ExpenseContextType["setExpenses"] = (expenses) => {
+    dispatch({ type: "SET", payload: expenses.reverse() });
   };
 
   const deleteExpense: ExpenseContextType["deleteExpense"] = (id) => {
@@ -66,6 +70,7 @@ export function ExpenseContextProvider({
       value={{
         expenses: expenseState,
         addExpense,
+        setExpenses,
         deleteExpense,
         updateExpense,
       }}
